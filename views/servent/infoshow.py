@@ -30,7 +30,7 @@ class Ui_S_Board(QtWidgets.QWidget):
         self.S_Board.setAutoFillBackground(True)
 
         self.windshow = QtWidgets.QComboBox(self.S_Board)
-        self.windshow.setGeometry(QtCore.QRect(350, 420, 110, 30))
+        self.windshow.setGeometry(QtCore.QRect(350, 430, 110, 30))
         self.windshow.setStyleSheet("border-radius:3px;padding:2px 4px;"
                                        "background-color: rgb(91,155,213,190);"
                                        "color:rgb(255,255,255);font: 9pt '微软雅黑'}")
@@ -41,7 +41,7 @@ class Ui_S_Board(QtWidgets.QWidget):
 
 
         self.windstate = QtWidgets.QLabel(self.S_Board)    #当前状态
-        self.windstate.setGeometry(QtCore.QRect(1000, 90, 150, 50))
+        self.windstate.setGeometry(QtCore.QRect(1000, 70, 150, 50))
         self.windstate.setStyleSheet("font: 75 12pt \"微软雅黑\";")
         # self.windlabel.setAlignment(QtCore.Qt.AlignCenter)
         pe = QtGui.QPalette()
@@ -95,11 +95,12 @@ class Ui_S_Board(QtWidgets.QWidget):
         # self.dtlabel.setPalette(pe)
         # self.dtlabel.setObjectName("dtlabel")
         self.dtshow_cold = QtWidgets.QComboBox(self.S_Board)
-        self.dtshow_cold.setGeometry(QtCore.QRect(350, 170, 110, 30))
+        self.dtshow_cold.setGeometry(QtCore.QRect(350, 180, 110, 30))
         self.dtshow_cold.setStyleSheet("border-radius:3px;padding:2px 4px;"
                                        "background-color: rgb(91,155,213,190);"
                                        "color:rgb(255,255,255);font: 9pt '微软雅黑'}")
         self.dtshow_cold.setObjectName("dtshow_cold")
+        self.dtshow_cold.addItem("25")
         self.dtshow_cold.addItem("24")
         self.dtshow_cold.addItem("23")
         self.dtshow_cold.addItem("22")
@@ -108,7 +109,7 @@ class Ui_S_Board(QtWidgets.QWidget):
         self.dtshow_cold.addItem("19")
         self.dtshow_cold.addItem("18")
         self.dtshow_hot = QtWidgets.QComboBox(self.S_Board)
-        self.dtshow_hot.setGeometry(QtCore.QRect(350, 170, 110, 30))
+        self.dtshow_hot.setGeometry(QtCore.QRect(350, 180, 110, 30))
         self.dtshow_hot.setStyleSheet("border-radius:3px;padding:2px 4px;"
                                        "background-color: rgb(91,155,213,190);"
                                        "color:rgb(255,255,255);font: 9pt '微软雅黑'}")
@@ -148,7 +149,7 @@ class Ui_S_Board(QtWidgets.QWidget):
         # self.modellabel.setPalette(pe)
         # self.modellabel.setObjectName("modellabel")
         self.modelshow = QtWidgets.QLabel(self.S_Board)
-        self.modelshow.setGeometry(QtCore.QRect(710, 90, 100, 50))
+        self.modelshow.setGeometry(QtCore.QRect(710, 70, 100, 50))
         self.modelshow.setStyleSheet("font: 75 12pt \"微软雅黑\";")
         # self.windlabel.setAlignment(QtCore.Qt.AlignCenter)
         pe = QtGui.QPalette()
@@ -225,13 +226,14 @@ class Ui_S_Board(QtWidgets.QWidget):
         self.rwshow.setText(_translate("S_Board", "mid"))
         # self.rwlabel.setText(_translate("S_Board", "实际风速"))
         # self.dtlabel.setText(_translate("S_Board", "目标温度"))
-        self.dtshow_cold.setItemText(0, _translate("S_Board", "24"))
-        self.dtshow_cold.setItemText(1, _translate("S_Board", "23"))
-        self.dtshow_cold.setItemText(2, _translate("S_Board", "22"))
-        self.dtshow_cold.setItemText(3, _translate("S_Board", "21"))
-        self.dtshow_cold.setItemText(4, _translate("S_Board", "20"))
-        self.dtshow_cold.setItemText(5, _translate("S_Board", "19"))
-        self.dtshow_cold.setItemText(6, _translate("S_Board", "18"))
+        self.dtshow_cold.setItemText(0, _translate("S_Board", "25"))
+        self.dtshow_cold.setItemText(1, _translate("S_Board", "24"))
+        self.dtshow_cold.setItemText(2, _translate("S_Board", "23"))
+        self.dtshow_cold.setItemText(3, _translate("S_Board", "22"))
+        self.dtshow_cold.setItemText(4, _translate("S_Board", "21"))
+        self.dtshow_cold.setItemText(5, _translate("S_Board", "20"))
+        self.dtshow_cold.setItemText(6, _translate("S_Board", "19"))
+        self.dtshow_cold.setItemText(7, _translate("S_Board", "18"))
         # self.rtlabel.setText(_translate("S_Board", "实际温度"))
         self.rtshow.setText(_translate("S_Board", "29度"))
         self.dtshow_hot.setItemText(0, _translate("S_Board", "30"))
@@ -278,10 +280,7 @@ class Ui_S_Board(QtWidgets.QWidget):
             ww = 'high'
         index_temp = self.windshow.findText(ww)
         self.windshow.setCurrentIndex(index_temp)
-        if(self.start_blowing == 0):
-            self.windstate.setText("待机中")
-        else:
-            self.windstate.setText("运行中")
+
         if (self.sysW == 1):
             ww = 'low'
         elif (self.sysW == 2):
@@ -289,7 +288,12 @@ class Ui_S_Board(QtWidgets.QWidget):
         elif(self.sysW == 3):
             ww = 'high'
         else:
-            ww = '不送风'
+            ww= "不送风"
+        if (self.start_blowing == 0):
+            self.windstate.setText("待机中")
+        else:
+            self.windstate.setText("运行中")
+            ww = "不送风"
         self.rwshow.setText(ww)
 
     def wind_change(self):

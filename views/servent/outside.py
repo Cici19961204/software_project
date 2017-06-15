@@ -14,9 +14,9 @@ from views.servent.S_login import Ui_S_Login
 from models.servent import HeartBeat,Sensor
 from models.servent.Servent import S_servent,myroom
 from PyQt5.QtWidgets import QMessageBox,QMainWindow
-from client import c
 
 class Ui_MainWindow(QMainWindow):
+    shutdon = False
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1200, 750)
@@ -104,7 +104,7 @@ class Ui_MainWindow(QMainWindow):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.heart = HeartBeat.HeartBeat()
-
+        from client import c
         c._connectFailed.connect(self.connectFailed)
 
 
@@ -128,12 +128,14 @@ class Ui_MainWindow(QMainWindow):
 
     #关机请求
     def shutdown_request(self):
+        self.shutdon = True
         print("shutdown_request")
         self.closeWidget.show()
         try:
             self.heart.timerStop()
             self.sensor.timerStop()
             self.boardwidget.timer.stop()
+            from client import c
             c.closeCon()
         except:
             print("未登入")
@@ -174,11 +176,17 @@ class Ui_MainWindow(QMainWindow):
             myroom.start_blowing = 0
         except:
             print("myroom not set")
+
+        #关机引起的断线不做这个处理
+        if(self.shutdon == True):
+            return
+
         Message = QMessageBox()  # 一个消息框
         button =  QMessageBox.information(Message, "Message","与主机建立连接失败，是否重试？", QMessageBox.Cancel|QMessageBox.Ok)
         if button == QMessageBox.Cancel:
             self.shutdown_request()
         elif button == QMessageBox.Ok:
+            from client import c
             c.reconnect()
     #关机处理
     #def shutdown_ok(self):
